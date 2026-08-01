@@ -11,13 +11,16 @@ class LogisticsRegression:
         self.num_iterations = num_iterations
         self.cost_history = []
 
-
+   
     def sigmoid(self, z):
 
         return 1 / (1 + np.exp(-z))
     def predict_probability(self,X):
         z = X @self.weights + self.bias
         return self.sigmoid(z)
+    def predict(self,X,threshold=0.5):
+        probabilities = self.predict_probability(X)
+        return (probabilities >= threshold).astype(int) #converts the probabilities to 0 or 1
 
     def cost_function(self,X,y):
         m_features = X.shape[0]
@@ -39,19 +42,20 @@ class LogisticsRegression:
     def fit(self,x,y):
         m, num_features = x.shape
         self.weights = np.zeros(num_features)
+        self.bias = 0.0
         self.cost_history = []
 
         for _ in range(self.num_iterations):
-            probabilities = self.predict_probability(X)
+            probabilities = self.predict_probability(x)
             error = probabilities - y
             dw = (x.T @ error) / m
-            db = np.sum(error) / m
+            db = np.mean(error)
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
             cost = self.cost_function(x, y)
             self.cost_history.append(cost)
-            
-            return self
+
+        return self
 
 
 

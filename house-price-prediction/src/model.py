@@ -24,7 +24,7 @@ class LinearRegression:
             # Calculate predictions and update parameters
             error  = self.predict(X) - y
             dw = (X.T @ error) / m
-            db = np.sum(error)/ m
+            db = np.mean(error)
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
             cost = self.cost_function(X, y)
