@@ -68,3 +68,5 @@ def load_movies():
         names= MOVIE_COLUMNS,
         encoding="latin-1"
     )
+
+    return movies
